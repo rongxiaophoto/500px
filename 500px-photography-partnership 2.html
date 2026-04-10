@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500px 摄影大赛商业合作门户 - 官方版</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root { --500px-red: #E21F26; }
+        body { font-family: 'Noto Sans SC', sans-serif; scroll-behavior: smooth; }
+        .font-poppins { font-family: 'Poppins', sans-serif; }
+        
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(to right, rgba(255,255,255,1) 30%, rgba(255,255,255,0.6) 60%, rgba(255,255,255,0) 100%);
+        }
+
+        .card-minimal {
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: 1px solid #f3f4f6;
+        }
+        .card-minimal:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            border-color: #1a1a1a;
+        }
+
+        /* Case Card Styles */
+        .case-card {
+            transition: all 0.3s ease;
+            display: block;
+            cursor: pointer;
+            background: #fff;
+        }
+        .case-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .case-card:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Case Card Large Styles */
+        .case-card-large {
+            position: relative;
+            height: 480px;
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        .case-card-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+        .case-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 32px;
+            color: white;
+        }
+        .case-card-large:hover img { transform: scale(1.1); }
+        .case-card-large:hover { transform: translateY(-10px); }
+
+        .tab-pill {
+            transition: all 0.3s ease;
+        }
+        .tab-pill.active {
+            background-color: #000;
+            color: #fff;
+            border-color: #000;
+        }
+
+        /* Slide Animation Styles */
+        .slide-content {
+            display: none;
+            animation: textReveal 0.6s ease-out forwards;
+        }
+        .slide-content.active { display: flex; }
+        
+        @keyframes textReveal {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-img {
+            transition: opacity 1s ease, transform 1.2s ease;
+            opacity: 0;
+            transform: scale(1.02);
+        }
+        .slide-img.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .progress-bar-bg {
+            height: 2px;
+            background: rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            position: absolute;
+            left: 0; top: 0; height: 100%;
+            background: #000;
+            width: 0%;
+        }
+
+        /* Modal Styles */
+        .modal-bg {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal-bg.active { display: flex; opacity: 1; }
+
+        .asset-icon-box {
+            width: 56px;
+            height: 56px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            color: #1a1a1a;
+            transition: all 0.3s ease;
+        }
+        .asset-card:hover .asset-icon-box {
+            background: #000;
+            color: #fff;
+        }
+
+        /* Logo Scroll Animation */
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .logo-scroll {
+            display: flex;
+            width: 200%;
+            animation: scroll 30s linear infinite;
+        }
+        .logo-scroll:hover { animation-play-state: paused; }
+
+        /* Brand Grid Styles */
+        .brand-grid img {
+            max-height: 40px;
+            width: auto;
+            filter: grayscale(100%);
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+        .brand-grid div:hover img {
+            filter: grayscale(0%);
+            opacity: 1;
+        }
+        .brand-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: #fff;
+            border: 1px solid #f3f4f6;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        .brand-item:hover {
+            border-color: #000;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.02);
+        }
+    </style>
+</head>
+<body class="text-slate-900 bg-white">
+
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 w-full z-50 glass-nav h-20 flex items-center">
+        <div class="max-w-7xl mx-auto px-8 w-full flex justify-between items-center">
+            <div class="flex items-center space-x-12">
+                <a href="#" class="text-2xl font-bold font-poppins">500<span class="text-[#E21F26]">px</span></a>
+                <div class="hidden lg:flex space-x-8 text-[11px] font-bold tracking-[0.2em] uppercase text-gray-400">
+                    <a href="#ecosystem" class="hover:text-black transition">社区生态</a>
+                    <a href="#solutions" class="hover:text-black transition">商业方案</a>
+                    <a href="#cases" class="hover:text-black transition">案例服务</a>
+                    <a href="#offline" class="hover:text-black transition">线下闭环</a>
+                    <a href="#assets" class="hover:text-black transition">资产管理</a>
+                    <a href="#social" class="hover:text-black transition">社媒传播</a>
+                    <a href="#partners" class="hover:text-black transition">合作伙伴</a>
+                </div>
+            </div>
+            <button onclick="openModal()" class="bg-black text-white px-8 py-2.5 rounded-full text-[11px] font-bold tracking-widest hover:bg-[#E21F26] transition-all">
+                立即咨询合作方案
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative h-[85vh] flex items-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1449034446853-66c86144b0ad?auto=format&fit=crop&q=80&w=2070" alt="摄影社区背景图" class="w-full h-full object-cover">
+            <div class="absolute inset-0 hero-gradient"></div>
+        </div>
+        <div class="relative z-10 max-w-7xl mx-auto px-8 w-full">
+            <div class="max-w-3xl">
+                <span class="text-[#E21F26] text-xs font-bold tracking-[0.5em] uppercase mb-6 block">Visual China Group / 500px</span>
+                <h1 class="text-5xl md:text-7xl font-bold leading-[1.2] mb-8">专业摄影社区平台</h1>
+                <p class="text-lg text-gray-700 font-light mb-12 leading-relaxed">
+                    500px 摄影社区是视觉中国旗下专业摄影平台，长期服务摄影大赛、城市影像征集及品牌视觉活动，具备从策划、征稿到传播与落地执行的一站式服务能力。
+                </p>
+                <div class="flex items-center space-x-8">
+                    <button onclick="openModal()" class="bg-black text-white px-10 py-5 rounded-full text-xs font-bold tracking-[0.2em] hover:bg-[#E21F26] transition-all">
+                        立即咨询合作方案 <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Stats -->
+    <section id="ecosystem" class="py-32 bg-white border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="text-center mb-24">
+                <h2 class="text-4xl font-light mb-4">社区生态 <span class="font-bold">& 核心数据</span></h2>
+                <p class="text-gray-400 font-light max-w-xl mx-auto">全球领先的视觉内容创作社区，汇聚顶级摄影力量</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+                <div>
+                    <h3 class="text-4xl md:text-5xl font-light mb-2 whitespace-nowrap"><span class="font-poppins">3500</span><span class="text-xl md:text-2xl ml-1">万+</span></h3>
+                    <p class="text-[10px] md:text-xs text-gray-400 tracking-widest uppercase">全球注册用户</p>
+                </div>
+                <div>
+                    <h3 class="text-4xl md:text-5xl font-light mb-2 whitespace-nowrap"><span class="font-poppins">1000</span><span class="text-xl md:text-2xl ml-1">万+</span></h3>
+                    <p class="text-[10px] md:text-xs text-gray-400 tracking-widest uppercase">中国区活跃用户</p>
+                </div>
+                <div>
+                    <h3 class="text-4xl md:text-5xl font-light mb-2 whitespace-nowrap"><span class="font-poppins">90</span><span class="text-xl md:text-2xl ml-1">万+</span></h3>
+                    <p class="text-[10px] md:text-xs text-gray-400 tracking-widest uppercase">全球签约摄影师</p>
+                </div>
+                <div>
+                    <h3 class="text-4xl md:text-5xl font-light mb-2 whitespace-nowrap"><span class="font-poppins">3</span><span class="text-xl md:text-2xl ml-1">亿+</span></h3>
+                    <p class="text-[10px] md:text-xs text-gray-400 tracking-widest uppercase">视觉资产库</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solutions -->
+    <section id="solutions" class="py-32 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="text-center mb-24">
+                <h2 class="text-4xl font-light mb-4">定制化 <span class="font-bold">商业方案</span></h2>
+                <div class="w-12 h-1 bg-[#E21F26] mx-auto"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card-minimal bg-white p-12 rounded-2xl border-none">
+                    <div class="w-12 h-12 bg-red-50 text-[#E21F26] rounded-full flex items-center justify-center mb-8">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4">摄影大赛运营</h4>
+                    <p class="text-sm text-gray-500 font-light leading-relaxed">提供摄影大赛全流程解决方案，覆盖策划、征稿、传播与运营，助力品牌打造具有传播声量的影像事件。</p>
+                </div>
+                <div class="card-minimal bg-white p-12 rounded-2xl border-none">
+                    <div class="w-12 h-12 bg-red-50 text-[#E21F26] rounded-full flex items-center justify-center mb-8">
+                        <i class="fa-solid fa-camera-retro"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4">线下活动落地</h4>
+                    <p class="text-sm text-gray-500 font-light leading-relaxed">围绕品牌传播与用户互动需求，提供摄影采风、Photowalk、分享会等线下活动策划与执行，结合「视觉盛典」等成熟IP。</p>
+                </div>
+                <div class="card-minimal bg-white p-12 rounded-2xl border-none">
+                    <div class="w-12 h-12 bg-red-50 text-[#E21F26] rounded-full flex items-center justify-center mb-8">
+                        <i class="fa-solid fa-gem"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4">数字资产管理</h4>
+                    <p class="text-sm text-gray-500 font-light leading-relaxed">沉淀赛事与活动内容，构建品牌影像资产库，持续放大内容价值与品牌影响力。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Studies with Tabs -->
+    <section id="cases" class="py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-light mb-4">赛事服务 <span class="font-bold">案例展示</span></h2>
+                <p class="text-gray-400 font-light text-sm max-w-2xl mx-auto">覆盖多个行业的摄影赛事合作实践，验证 500px 的服务能力与传播价值</p>
+            </div>
+            <div class="flex flex-wrap justify-center gap-3 mb-16">
+                <button id="tab-gov" onclick="switchTab('government', this)" class="tab-pill active px-8 py-2.5 rounded-full text-xs font-bold border border-gray-100 bg-gray-50 hover:bg-gray-100 tracking-widest transition-all">党政媒体</button>
+                <button onclick="switchTab('tourism', this)" class="tab-pill px-8 py-2.5 rounded-full text-xs font-bold border border-gray-100 bg-gray-50 hover:bg-gray-100 tracking-widest transition-all">政府文旅</button>
+                <button onclick="switchTab('photography', this)" class="tab-pill px-8 py-2.5 rounded-full text-xs font-bold border border-gray-100 bg-gray-50 hover:bg-gray-100 tracking-widest transition-all">影像业</button>
+                <button onclick="switchTab('finance', this)" class="tab-pill px-8 py-2.5 rounded-full text-xs font-bold border border-gray-100 bg-gray-50 hover:bg-gray-100 tracking-widest transition-all">金融业</button>
+                <button onclick="switchTab('tech3c', this)" class="tab-pill px-8 py-2.5 rounded-full text-xs font-bold border border-gray-100 bg-gray-50 hover:bg-gray-100 tracking-widest transition-all">数码3C</button>
+                <button onclick="switchTab('other', this)" class="tab-pill px-8 py-2.5 rounded-full text-xs font-bold border border-gray-100 bg-gray-50 hover:bg-gray-100 tracking-widest transition-all">其他</button>
+            </div>
+            <div id="case-container" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+        </div>
+    </section>
+
+    <!-- Offline Visual Fest -->
+    <section id="offline" class="py-32 bg-gray-50 border-t border-gray-100 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
+                <div class="w-full lg:w-[62%] relative group">
+                    <div class="aspect-[16/9] overflow-hidden rounded-[2.5rem] relative shadow-2xl bg-gray-200">
+                        <img id="img-0" src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1600" class="w-full h-full object-cover absolute inset-0 slide-img active">
+                        <img id="img-1" src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=1600" class="w-full h-full object-cover absolute inset-0 slide-img">
+                        <img id="img-2" src="https://images.unsplash.com/photo-1531050171651-61afc2286024?auto=format&fit=crop&q=80&w=1600" class="w-full h-full object-cover absolute inset-0 slide-img">
+                        <img id="img-3" src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=1600" class="w-full h-full object-cover absolute inset-0 slide-img">
+                        <img id="img-4" src="https://images.unsplash.com/photo-1524178232363-1fb28f74b0cd?auto=format&fit=crop&q=80&w=1600" class="w-full h-full object-cover absolute inset-0 slide-img">
+                    </div>
+                    <div class="flex space-x-3 mt-10 px-4">
+                        <div class="flex-1 progress-bar-bg rounded-full"><div class="progress-bar-fill" id="p-0"></div></div>
+                        <div class="flex-1 progress-bar-bg rounded-full"><div class="progress-bar-fill" id="p-1"></div></div>
+                        <div class="flex-1 progress-bar-bg rounded-full"><div class="progress-bar-fill" id="p-2"></div></div>
+                        <div class="flex-1 progress-bar-bg rounded-full"><div class="progress-bar-fill" id="p-3"></div></div>
+                        <div class="flex-1 progress-bar-bg rounded-full"><div class="progress-bar-fill" id="p-4"></div></div>
+                    </div>
+                </div>
+
+                <div class="w-full lg:w-[38%] flex flex-col justify-center min-h-[400px]">
+                    <div class="slide-content active flex-col" id="t-0">
+                        <span class="text-[#E21F26] text-[11px] font-bold tracking-[0.4em] uppercase mb-6 block">Visual Festival</span>
+                        <h3 class="text-4xl lg:text-5xl font-bold mb-8 leading-tight tracking-tight">视觉盛典</h3>
+                        <p class="text-gray-500 font-light leading-relaxed text-lg">自 2018 年起举办，覆盖北上广深多城。融合颁奖、论坛、展览与互动，连接摄影师、品牌与资源。</p>
+                    </div>
+                    <div class="slide-content flex-col" id="t-1">
+                        <span class="text-[#E21F26] text-[11px] font-bold tracking-[0.4em] uppercase mb-6 block">Brand Booth</span>
+                        <h3 class="text-4xl lg:text-5xl font-bold mb-8 leading-tight tracking-tight">品牌展位</h3>
+                        <p class="text-gray-500 font-light leading-relaxed text-lg">为合作品牌提供展位搭建与互动机会。强化品牌曝光，促进摄影圈层深度连接。</p>
+                    </div>
+                    <div class="slide-content flex-col" id="t-2">
+                        <span class="text-[#E21F26] text-[11px] font-bold tracking-[0.4em] uppercase mb-6 block">Photo Exhibition</span>
+                        <h3 class="text-4xl lg:text-5xl font-bold mb-8 leading-tight tracking-tight">摄影展览</h3>
+                        <p class="text-gray-500 font-light leading-relaxed text-lg">围绕摄影大赛、品牌项目或主题活动，策划线下摄影展览，强化品牌表达与传播声量。</p>
+                    </div>
+                    <div class="slide-content flex-col" id="t-3">
+                        <span class="text-[#E21F26] text-[11px] font-bold tracking-[0.4em] uppercase mb-6 block">Content Production</span>
+                        <h3 class="text-4xl lg:text-5xl font-bold mb-8 leading-tight tracking-tight">KOL定制拍摄</h3>
+                        <p class="text-gray-500 font-light leading-relaxed text-lg">结合品牌传播需求，组织摄影师与达人开展定制拍摄，输出优质影像内容。</p>
+                    </div>
+                    <div class="slide-content flex-col" id="t-4">
+                        <span class="text-[#E21F26] text-[11px] font-bold tracking-[0.4em] uppercase mb-6 block">Photo Excursion</span>
+                        <h3 class="text-4xl lg:text-5xl font-bold mb-8 leading-tight tracking-tight">Photowalk</h3>
+                        <p class="text-gray-500 font-light leading-relaxed text-lg">组织摄影师参与线下实拍。导师带队、作品点评与传播，提升用户参与感与品牌话题度。</p>
+                    </div>
+                    <div class="slide-content flex-col" id="t-5">
+                        <span class="text-[#E21F26] text-[11px] font-bold tracking-[0.4em] uppercase mb-6 block">Photography Training</span>
+                        <h3 class="text-4xl lg:text-5xl font-bold mb-8 leading-tight tracking-tight">摄影培训</h3>
+                        <p class="text-gray-500 font-light leading-relaxed text-lg">提供主题分享、实战教学与摄影培训，帮助企业/组织提升内容生产与品牌表达能力。</p>
+                    </div>
+
+                    <div class="flex items-center space-x-6 mt-12">
+                        <button onclick="prevSlide()" class="w-14 h-14 rounded-full border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white transition-all shadow-sm">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+                        <button onclick="nextSlide()" class="w-14 h-14 rounded-full border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white transition-all shadow-sm">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Digital Asset Management System -->
+    <section id="assets" class="py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="mb-20">
+                <div class="max-w-2xl">
+                    <h2 class="text-4xl font-light mb-6">数字资产 <span class="font-bold">管理系统</span></h2>
+                    <p class="text-gray-500 font-light leading-relaxed">
+                        提供内容管理、智能检索、版权保障与应用运营一体化的数字资产解决方案，助力品牌高效管理、分发与沉淀视觉内容。
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Point 1 -->
+                <div class="asset-card p-8 rounded-3xl border border-gray-100 hover:border-black transition-all group">
+                    <div class="asset-icon-box">
+                        <i class="fa-solid fa-layer-group text-xl"></i>
+                    </div>
+                    <h4 class="text-lg font-bold mb-4 text-black">统一管理</h4>
+                    <p class="text-sm text-gray-500 font-light leading-relaxed">多类型内容集中归档，提升资产管理效率，实现资产全周期高效管理与存储。</p>
+                </div>
+
+                <!-- Point 2 -->
+                <div class="asset-card p-8 rounded-3xl border border-gray-100 hover:border-black transition-all group">
+                    <div class="asset-icon-box">
+                        <i class="fa-solid fa-magnifying-glass text-xl"></i>
+                    </div>
+                    <h4 class="text-lg font-bold mb-4 text-black">智能检索</h4>
+                    <p class="text-sm text-gray-500 font-light leading-relaxed">支持标签、分类、搜索等方式快速调用内容，提升视觉素材的复用率。</p>
+                </div>
+
+                <!-- Point 3 -->
+                <div class="asset-card p-8 rounded-3xl border border-gray-100 hover:border-black transition-all group">
+                    <div class="asset-icon-box">
+                        <i class="fa-solid fa-shield-halved text-xl"></i>
+                    </div>
+                    <h4 class="text-lg font-bold mb-4 text-black">版权保障</h4>
+                    <p class="text-sm text-gray-500 font-light leading-relaxed">支持实名认证、签约管理、确权存证等能力，保护每一份视觉内容的知识产权。</p>
+                </div>
+
+                <!-- Point 4 -->
+                <div class="asset-card p-8 rounded-3xl border border-gray-100 hover:border-black transition-all group">
+                    <div class="asset-icon-box">
+                        <i class="fa-solid fa-wand-magic-sparkles text-xl"></i>
+                    </div>
+                    <h4 class="text-lg font-bold mb-4 text-black">灵活应用</h4>
+                    <p class="text-sm text-gray-500 font-light leading-relaxed">可适配专题页、小程序、活动征集、在线展览等多元化营销场景，灵活分发内容。</p>
+                </div>
+            </div>
+
+
+    <!-- Social Influence & Media Synergy -->
+    <section id="social" class="py-32 bg-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="flex flex-col lg:flex-row justify-between items-end mb-20 gap-8">
+                <div class="max-w-2xl">
+                    <span class="text-[#E21F26] text-[11px] font-bold tracking-[0.4em] uppercase mb-4 block">Social & Media Impact</span>
+                    <h2 class="text-4xl font-light mb-6">社媒矩阵 <span class="font-bold">& 主流媒体联动</span></h2>
+                    <p class="text-gray-500 font-light leading-relaxed">
+                        依托 500px 国内外新媒体矩阵与视觉中国全球分发渠道，推动优质内容实现多平台扩散与国际传播落地。
+                    </p>
+                </div>
+                <div class="flex space-x-12">
+                    
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+                <!-- Platform Matrix 1 -->
+                <div class="bg-slate-50 p-10 rounded-[2.5rem] shadow-sm border border-gray-100">
+                    <div class="flex items-center space-x-3 mb-8">
+                        <div class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white"><i class="fa-brands fa-weibo"></i></div>
+                        <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white"><i class="fa-brands fa-weixin"></i></div>
+                        <div class="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white"><i class="fa-solid fa-camera"></i></div>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4">国内深度覆盖</h4>
+                    <p class="text-sm text-gray-500 font-light leading-relaxed mb-6">视觉中国与500px官方公众号、微博、小红书三大矩阵同步运营，联动覆盖 50+ 摄影社群，垂直触达深度摄影发烧友及行业领袖。</p>
+                    <div class="pt-6 border-t border-gray-200">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Core Impact</span>
+                        <p class="text-lg font-bold mt-2">200万+粉丝</p>
+                    </div>
+                </div>
+
+                <!-- Platform Matrix 2 -->
+                <div class="bg-slate-50 p-10 rounded-[2.5rem] shadow-sm border border-gray-100">
+                    <div class="flex items-center space-x-3 mb-8">
+                        <div class="w-10 h-10 bg-pink-600 rounded-full flex items-center justify-center text-white"><i class="fa-brands fa-instagram"></i></div>
+                        <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white"><i class="fa-brands fa-facebook-f"></i></div>
+                        <div class="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white"><i class="fa-brands fa-x-twitter"></i></div>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4">海外影响力</h4>
+                    <p class="text-sm text-gray-500 font-light leading-relaxed mb-6">Instagram 官方账号拥有 200W+ 优质视觉追随者，海外全网覆盖 190+ 国家，助力中国品牌全球影像叙事。</p>
+                    <div class="pt-6 border-t border-gray-200">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Global Reach</span>
+                        <p class="text-lg font-bold mt-2">500万+粉丝</p>
+                    </div>
+                </div>
+
+                <!-- Media Synergy -->
+                <div class="bg-black text-white p-10 rounded-[2.5rem] shadow-xl lg:col-span-1">
+                    <div class="w-10 h-10 bg-[#E21F26] rounded-full flex items-center justify-center mb-8"><i class="fa-solid fa-paper-plane"></i></div>
+                    <h4 class="text-xl font-bold mb-4">主流媒体下发</h4>
+                    <p class="text-sm text-gray-400 font-light leading-relaxed mb-8">
+                        依托视觉中国媒体服务平台，赛事优秀作品可推送至 100+ 家国内外主流媒体，实现从“行业赛事”到“大众热点”的声量跃迁。
+                    <div class="pt-6 border-t border-gray-200">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Global Reach</span>
+                        <p class="text-lg font-bold mt-2">100+媒体联动传播</p>
+                    </div>     
+                    
+                </div>
+            </div>
+
+
+    <!-- Final Call to Action -->
+    <section class="py-24 bg-slate-900 text-white text-center">
+        <div class="max-w-4xl mx-auto px-8">
+            <h2 class="text-4xl font-bold mb-8">用影像放大品牌影响力</h2>
+            <p class="text-gray-400 mb-12 leading-relaxed">从赛事策划到内容传播，从线下活动到影像资产沉淀，500px 以专业摄影社区能力，为品牌提供更具影响力的视觉内容解决方案。</p>
+            <button onclick="openModal()" class="bg-[#E21F26] text-white px-12 py-5 rounded-full text-sm font-bold tracking-widest hover:scale-105 transition-all shadow-xl">
+                立即咨询合作方案
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 bg-black text-white border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-8 text-center">
+            <h2 class="text-3xl font-bold mb-8 font-poppins">500<span class="text-[#E21F26]">px</span></h2>
+            <p class="text-gray-500 text-sm mb-12">视觉中国旗下专业摄影社区 · 赋能品牌视觉营销新场景</p>
+            <div class="flex justify-center space-x-8 mb-12 text-gray-400">
+                <a href="#" class="hover:text-white transition"><i class="fa-brands fa-weibo text-xl"></i></a>
+                <a href="#" class="hover:text-white transition"><i class="fa-brands fa-weixin text-xl"></i></a>
+                <a href="#" class="hover:text-white transition"><i class="fa-brands fa-instagram text-xl"></i></a>
+            </div>
+            <p class="text-[10px] text-gray-600 tracking-[0.2em] uppercase">© 2026 Visual China Group / 500px China. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Form Modal -->
+    <div id="downloadModal" class="modal-bg items-center justify-center p-6" onclick="if(event.target===this)closeModal()">
+        <div class="bg-white w-full max-w-md rounded-3xl p-10 relative" onclick="event.stopPropagation()">
+            <button onclick="closeModal()" class="absolute top-6 right-6 text-gray-300 hover:text-black"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <h3 class="text-2xl font-bold mb-2">定制深度合作方案</h3>
+            <p class="text-gray-400 text-sm mb-8">我们将为您提供一站式摄影赛事与宣发建议</p>
+            <form onsubmit="event.preventDefault(); alert('需求已收到！'); closeModal();" class="space-y-4">
+                <input type="text" placeholder="公司名称" required class="w-full bg-gray-50 px-6 py-4 rounded-xl text-sm outline-none">
+                <input type="text" placeholder="联系人姓名" required class="w-full bg-gray-50 px-6 py-4 rounded-xl text-sm outline-none">
+                <input type="tel" placeholder="手机号/微信号" required class="w-full bg-gray-50 px-6 py-4 rounded-xl text-sm outline-none">
+                <button type="submit" class="w-full bg-black text-white py-4 rounded-xl font-bold text-sm tracking-widest mt-4">提交咨询</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Case Data for Tab Switching
+        const caseData = {
+            government: [
+                { brand: "CGTN", title: "CGTN《同一个家园》影像征集", img: "https://images.unsplash.com/photo-1523497435030-ee44a67edff6?auto=format&fit=crop&q=80&w=1200" },
+                { brand: "人民日报", title: "四季·城市全球华人生活大赛", img: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&q=80&w=1200" },
+                { brand: "经济日报", title: "幸福中国微视频征集活动", img: "https://images.unsplash.com/photo-1496568849127-12348734f678?auto=format&fit=crop&q=80&w=1200" }
+            ],
+            tourism: [
+                { brand: "北京文旅", title: "漫步北京·全球摄影大赛", img: "https://images.unsplash.com/photo-1547981316-d58a572a5166?auto=format&fit=crop&q=80&w=1200" },
+                { brand: "瑞士旅游局", title: "遇见瑞士·视觉故事征集", img: "https://images.unsplash.com/photo-1491555103946-3c631c5130ca?auto=format&fit=crop&q=80&w=1200" }
+            ],
+            photography: [
+                { brand: "500px", title: "BEST 10 年度摄影师评选", img: "https://images.unsplash.com/photo-1542038783-0ad457d2242b?auto=format&fit=crop&q=80&w=1200" }
+            ],
+            tech3c: [
+                { brand: "华为", title: "XMAGE 影像大赛全球巡展", img: "https://images.unsplash.com/photo-1512499617640-c74ae3a79d37?auto=format&fit=crop&q=80&w=1200" }
+            ]
+        };
+
+        // Tab Switching Function
+        function switchTab(industry, targetElement) {
+            document.querySelectorAll('.tab-pill').forEach(btn => btn.classList.remove('active'));
+            if (targetElement) {
+                targetElement.classList.add('active');
+            }
+            const container = document.getElementById('case-container');
+            container.innerHTML = (caseData[industry] || []).map(item => `
+                <div class="case-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+                    <div class="aspect-[4/3] overflow-hidden bg-gray-100">
+                        <img src="${item.img}" class="w-full h-full object-cover transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <p class="text-[10px] font-bold text-[#E21F26] mb-2 uppercase tracking-widest">${item.brand}</p>
+                        <h5 class="text-lg font-bold leading-tight text-black">${item.title}</h5>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Slide Carousel Logic
+        let slideIdx = 0;
+        const slideTotal = 5;
+        const slideDuration = 5000;
+        let slideTimer;
+
+        function updateSlide() {
+            document.querySelectorAll('.slide-img').forEach((img, i) => {
+                img.classList.remove('active');
+                if(i === slideIdx) img.classList.add('active');
+            });
+            document.querySelectorAll('.slide-content').forEach((text, i) => {
+                text.classList.remove('active');
+                if(i === slideIdx) text.classList.add('active');
+            });
+            document.querySelectorAll('.progress-bar-fill').forEach((p, i) => {
+                p.style.transition = 'none';
+                p.style.width = i < slideIdx ? '100%' : '0%';
+            });
+            setTimeout(() => {
+                const p = document.getElementById(`p-${slideIdx}`);
+                if (p) {
+                    p.style.transition = `width ${slideDuration}ms linear`;
+                    p.style.width = '100%';
+                }
+            }, 50);
+        }
+
+        function nextSlide() { 
+            slideIdx = (slideIdx + 1) % slideTotal; 
+            resetSlide(); 
+            updateSlide(); 
+        }
+        
+        function prevSlide() { 
+            slideIdx = (slideIdx - 1 + slideTotal) % slideTotal; 
+            resetSlide(); 
+            updateSlide(); 
+        }
+        
+        function resetSlide() { 
+            clearInterval(slideTimer); 
+            slideTimer = setInterval(nextSlide, slideDuration); 
+        }
+
+        // Modal Functions
+        function openModal() { 
+            document.getElementById('downloadModal').classList.add('active'); 
+        }
+        
+        function closeModal() { 
+            document.getElementById('downloadModal').classList.remove('active'); 
+        }
+
+        // Initialize on page load
+        window.onload = () => {
+            switchTab('government', document.getElementById('tab-gov'));
+            updateSlide();
+            resetSlide();
+        };
+    </script>
+</body>
+</html>
